@@ -69,48 +69,44 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         )
                     }
                 case .fullScreen:
-                    if #available(iOS 14, tvOS 14, watchOS 7, *) {
-                        if presentable is AnyView {
-                            let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+                    if presentable is AnyView {
+                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
 
-                            #if os(macOS)
-                                self.presented = Presented(
-                                    view: AnyView(
-                                        NavigationView(
-                                            content: {
-                                                view
-                                            }
-                                        )
-                                    ),
-                                    type: .fullScreen
-                                )
-                            #else
-                                self.presented = Presented(
-                                    view: AnyView(
-                                        NavigationView(
-                                            content: {
-                                                #if os(macOS)
-                                                    view
-                                                #else
-                                                    view.navigationBarHidden(true)
-                                                #endif
-                                            }
-                                        )
-                                        .navigationViewStyle(StackNavigationViewStyle())
-                                    ),
-                                    type: .fullScreen
-                                )
-                            #endif
-                        } else {
-                            self.presented = Presented(
+                        #if os(macOS)
+                            presented = Presented(
                                 view: AnyView(
-                                    presentable.view()
+                                    NavigationView(
+                                        content: {
+                                            view
+                                        }
+                                    )
                                 ),
                                 type: .fullScreen
                             )
-                        }
+                        #else
+                            presented = Presented(
+                                view: AnyView(
+                                    NavigationView(
+                                        content: {
+                                            #if os(macOS)
+                                                view
+                                            #else
+                                                view.navigationBarHidden(true)
+                                            #endif
+                                        }
+                                    )
+                                    .navigationViewStyle(StackNavigationViewStyle())
+                                ),
+                                type: .fullScreen
+                            )
+                        #endif
                     } else {
-                        fatalError()
+                        presented = Presented(
+                            view: AnyView(
+                                presentable.view()
+                            ),
+                            type: .fullScreen
+                        )
                     }
                 }
             }

@@ -31,27 +31,23 @@ final class MainCoordinator: NavigationCoordinatable {
         #elseif os(tvOS)
             sharedView(view)
         #elseif os(iOS)
-            if #available(iOS 14.0, *) {
-                sharedView(view).onOpenURL(perform: { url in
-                    if let coordinator = self.hasRoot(\.authenticated) {
-                        do {
-                            let deepLink = try DeepLink(url: url, todosStore: coordinator.todosStore)
+            sharedView(view).onOpenURL(perform: { url in
+                if let coordinator = self.hasRoot(\.authenticated) {
+                    do {
+                        let deepLink = try DeepLink(url: url, todosStore: coordinator.todosStore)
 
-                            switch deepLink {
-                            case let .todo(id):
-                                coordinator
-                                    .focusFirst(\.todos)
-                                    .child
-                                    .route(to: \.todo, id)
-                            }
-                        } catch {
-                            print(error.localizedDescription)
+                        switch deepLink {
+                        case let .todo(id):
+                            coordinator
+                                .focusFirst(\.todos)
+                                .child
+                                .route(to: \.todo, id)
                         }
+                    } catch {
+                        print(error.localizedDescription)
                     }
-                }).accentColor(Color("AccentColor"))
-            } else {
-                sharedView(view).accentColor(Color("AccentColor"))
-            }
+                }
+            }).accentColor(Color("AccentColor"))
         #else
             sharedView(view)
         #endif

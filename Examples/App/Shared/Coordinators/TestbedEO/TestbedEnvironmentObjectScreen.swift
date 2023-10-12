@@ -18,10 +18,8 @@ struct TestbedEnvironmentObjectScreen: View {
                     testbed.route(to: \.pushScreen)
                 }
                 /*
-                 if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-                     RoundedButton("Cover screen") {
-                         testbed.route(to: .coverScreen)
-                     }
+                 RoundedButton("Cover screen") {
+                    testbed.route(to: .coverScreen)
                  }
                   */
                 RoundedButton("Modal coordinator") {
@@ -31,10 +29,8 @@ struct TestbedEnvironmentObjectScreen: View {
                     testbed.route(to: \.pushCoordinator)
                 }
                 /*
-                 if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-                     RoundedButton("Cover coordinator") {
-                         testbed.route(to: .coverCoordinator)
-                     }
+                 RoundedButton("Cover coordinator") {
+                    testbed.route(to: .coverCoordinator)
                  }
                   */
                 RoundedButton("Dismiss me!") {
