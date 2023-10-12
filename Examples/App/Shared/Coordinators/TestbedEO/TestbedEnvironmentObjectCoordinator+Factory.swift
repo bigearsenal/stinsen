@@ -8,17 +8,17 @@ extension TestbedEnvironmentObjectCoordinator {
     }
 
     @ViewBuilder func makeModalScreen() -> some View {
-        NavigationView {
+        SwiftUI.NavigationStack {
             TestbedEnvironmentObjectScreen()
         }
     }
 
     func makePushCoordinator() -> TestbedEnvironmentObjectCoordinator {
-        return TestbedEnvironmentObjectCoordinator()
+        TestbedEnvironmentObjectCoordinator()
     }
 
     func makeModalCoordinator() -> NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator> {
-        return NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
+        NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
     }
 
     @ViewBuilder func makeStart() -> some View {

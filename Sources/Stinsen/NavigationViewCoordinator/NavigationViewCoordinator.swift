@@ -7,16 +7,15 @@ public class NavigationViewCoordinator<T: Coordinatable>: ViewWrapperCoordinator
         super.init(childCoordinator) { view in
             #if os(macOS)
                 AnyView(
-                    NavigationView {
+                    SwiftUI.NavigationStack {
                         view
                     }
                 )
             #else
                 AnyView(
-                    NavigationView {
+                    SwiftUI.NavigationStack {
                         view
                     }
-                    .navigationViewStyle(StackNavigationViewStyle())
                 )
             #endif
         }

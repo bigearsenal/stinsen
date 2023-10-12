@@ -27,7 +27,7 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         #if os(macOS)
                             presented = Presented(
                                 view: AnyView(
-                                    NavigationView(
+                                    SwiftUI.NavigationStack(
                                         content: {
                                             view
                                         }
@@ -38,12 +38,9 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         #else
                             presented = Presented(
                                 view: AnyView(
-                                    NavigationView(
-                                        content: {
-                                            view.navigationBarHidden(true)
-                                        }
-                                    )
-                                    .navigationViewStyle(StackNavigationViewStyle())
+                                    SwiftUI.NavigationStack {
+                                        view.navigationBarHidden(true)
+                                    }
                                 ),
                                 type: .modal
                             )
@@ -75,10 +72,8 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         #if os(macOS)
                             presented = Presented(
                                 view: AnyView(
-                                    NavigationView(
-                                        content: {
-                                            view
-                                        }
+                                    SwiftUI.NavigationStack(
+                                        view
                                     )
                                 ),
                                 type: .fullScreen
@@ -86,16 +81,13 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         #else
                             presented = Presented(
                                 view: AnyView(
-                                    NavigationView(
-                                        content: {
-                                            #if os(macOS)
-                                                view
-                                            #else
-                                                view.navigationBarHidden(true)
-                                            #endif
-                                        }
-                                    )
-                                    .navigationViewStyle(StackNavigationViewStyle())
+                                    SwiftUI.NavigationStack {
+                                        #if os(macOS)
+                                            view
+                                        #else
+                                            view.navigationBarHidden(true)
+                                        #endif
+                                    }
                                 ),
                                 type: .fullScreen
                             )
