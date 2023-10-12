@@ -65,7 +65,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                 .hidden()
             )
             .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
-                presentationHelper.presented?.type.isModal == true
+                presentationHelper.presented?.type.isSheet == true
             }, set: { _ in
                 self.coordinator.appear(self.id)
             }), onDismiss: {
@@ -74,7 +74,11 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
             }, content: { () -> AnyView in
                 { () -> AnyView in
                     if let view = presentationHelper.presented?.view {
-                        return AnyView(view)
+                        if let presentationDetents = presentationHelper.presented?.type.presentationDetents {
+                            return AnyView(view.presentationDetents(presentationDetents))
+                        } else {
+                            return AnyView(view)
+                        }
                     } else {
                         return AnyView(EmptyView())
                     }

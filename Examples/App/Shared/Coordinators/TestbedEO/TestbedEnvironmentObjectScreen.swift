@@ -14,6 +14,9 @@ struct TestbedEnvironmentObjectScreen: View {
                 RoundedButton("Modal screen") {
                     testbed.route(to: \.modalScreen)
                 }
+                RoundedButton("Sheet with presentationDetents") {
+                    testbed.route(to: \.sheetWithPresentationDetents)
+                }
                 RoundedButton("Push screen") {
                     testbed.route(to: \.pushScreen)
                 }

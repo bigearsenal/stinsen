@@ -11,6 +11,7 @@ final class TestbedEnvironmentObjectCoordinator: NavigationCoordinatable {
     @Route(.push) var pushScreen = makePushScreen
     @Route(.modal) var modalCoordinator = makeModalCoordinator
     @Route(.push) var pushCoordinator = makePushCoordinator
+    @Route(.sheet(presentationDetents: [.medium, .large])) var sheetWithPresentationDetents = makeModalScreen
 
     deinit {
         print("Deinit TestbedEnvironmentObjectCoordinator")
