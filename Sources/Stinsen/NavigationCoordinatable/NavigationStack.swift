@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 import SwiftUI
 
 struct NavigationRootItem {
@@ -12,7 +12,7 @@ struct NavigationRootItem {
 /// Used so that you don't need to write @Published
 public class NavigationRoot: ObservableObject {
     @Published var item: NavigationRootItem
-    
+
     init(item: NavigationRootItem) {
         self.item = item
     }
@@ -21,20 +21,20 @@ public class NavigationRoot: ObservableObject {
 /// Represents a stack of routes
 public class NavigationStack<T: NavigationCoordinatable> {
     var dismissalAction: [Int: () -> Void] = [:]
-    
+
     weak var parent: ChildDismissable?
     var poppedTo = PassthroughSubject<Int, Never>()
     let initial: PartialKeyPath<T>
     let initialInput: Any?
     var root: NavigationRoot!
-    
+
     @Published var value: [NavigationStackItem]
-    
+
     public init(initial: PartialKeyPath<T>, _ initialInput: Any? = nil) {
-        self.value = []
+        value = []
         self.initial = initial
         self.initialInput = initialInput
-        self.root = nil
+        root = nil
     }
 }
 
@@ -49,20 +49,20 @@ public extension NavigationStack {
     }
 
     /**
-    Checks if a particular KeyPath is in a stack
-     - Parameter keyPathHash:The hash of the keyPath
-     - Returns: Boolean indiacting whether the route is in the stack
-     */
+     Checks if a particular KeyPath is in a stack
+      - Parameter keyPathHash:The hash of the keyPath
+      - Returns: Boolean indiacting whether the route is in the stack
+      */
     func isInStack(_ keyPathHash: Int) -> Bool {
         return value.contains { $0.keyPath == keyPathHash }
     }
 
     /**
-    Checks if a parent coordinator
-     - Returns: Boolean indiacting whether the coordinator has a parent
-     */
+     Checks if a parent coordinator
+      - Returns: Boolean indiacting whether the coordinator has a parent
+      */
     func hasParent() -> Bool {
-        return self.parent != nil
+        return parent != nil
     }
 }
 

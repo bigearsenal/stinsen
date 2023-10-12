@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct PasswordRegistrationScreen: View {
     private let services: UnauthenticatedServices
@@ -10,7 +10,7 @@ struct PasswordRegistrationScreen: View {
     @State private var passwordAgain: String = ""
 
     private let username: String
-    
+
     var body: some View {
         ScrollView {
             InfoText("Please enter your desired password")
@@ -25,7 +25,7 @@ struct PasswordRegistrationScreen: View {
         }
         .navigationTitle(with: "Register user")
     }
-    
+
     init(services: UnauthenticatedServices, username: String) {
         self.services = services
         self.username = username

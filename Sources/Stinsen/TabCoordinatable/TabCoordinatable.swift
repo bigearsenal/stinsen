@@ -30,7 +30,7 @@ public protocol TabCoordinatable: Coordinatable {
     @discardableResult func focusFirst<Output: Coordinatable>(
         _ route: KeyPath<Self, Content<Self, Output>>
     ) -> Output
-    
+
     /**
      Searches the tabbar for the first route that matches the route and makes it the active tab.
 
@@ -43,15 +43,13 @@ public protocol TabCoordinatable: Coordinatable {
 
 public extension TabCoordinatable {
     var routerStorable: Self {
-        get {
-            self
-        }
+        self
     }
 
-    func dismissChild<T: Coordinatable>(coordinator: T, action: (() -> Void)?) {
+    func dismissChild<T: Coordinatable>(coordinator _: T, action _: (() -> Void)?) {
         fatalError("Not implemented")
     }
-    
+
     var parent: ChildDismissable? {
         get {
             return child.parent
@@ -59,13 +57,13 @@ public extension TabCoordinatable {
             child.parent = newValue
         }
     }
-    
+
     internal func setupAllTabs() {
         var all: [TabChildItem] = []
-        
-        for abs in self.child.startingItems {
+
+        for abs in child.startingItems {
             let ina = self[keyPath: abs]
-            
+
             if let val = ina as? Outputable {
                 all.append(
                     TabChildItem(
@@ -73,7 +71,7 @@ public extension TabCoordinatable {
                         keyPathIsEqual: {
                             let lhs = abs as! PartialKeyPath<Self>
                             let rhs = $0 as! PartialKeyPath<Self>
-                            return (lhs == rhs)
+                            return lhs == rhs
                         },
                         tabItem: { [unowned self] in
                             val.tabItem(active: $0, coordinator: self)
@@ -85,10 +83,10 @@ public extension TabCoordinatable {
                 )
             }
         }
-        
-        self.child.allItems = all
+
+        child.allItems = all
     }
-    
+
     func customize(_ view: AnyView) -> some View {
         return view
     }
@@ -96,35 +94,35 @@ public extension TabCoordinatable {
     func view() -> AnyView {
         AnyView(
             TabCoordinatableView(
-                paths: self.child.startingItems,
+                paths: child.startingItems,
                 coordinator: self,
                 customize: customize
             )
         )
     }
-    
+
     @discardableResult func focusFirst<Output: Coordinatable>(
         _ route: KeyPath<Self, Content<Self, Output>>
     ) -> Output {
         if child.allItems == nil {
             setupAllTabs()
         }
-        
+
         guard let value = child.allItems.enumerated().first(where: { item in
             guard item.element.keyPathIsEqual(route) else {
                 return false
             }
-            
+
             return true
         }) else {
             fatalError()
         }
-        
-        self.child.activeTab = value.offset
-        
+
+        child.activeTab = value.offset
+
         return value.element.presentable as! Output
     }
-    
+
     @discardableResult func focusFirst<Output: View>(
         _ route: KeyPath<Self, Content<Self, Output>>
     ) -> Self {
@@ -136,14 +134,14 @@ public extension TabCoordinatable {
             guard item.element.keyPathIsEqual(route) else {
                 return false
             }
-            
+
             return true
         }) else {
             fatalError()
         }
-        
-        self.child.activeTab = value.offset
-        
+
+        child.activeTab = value.offset
+
         return self
     }
 }

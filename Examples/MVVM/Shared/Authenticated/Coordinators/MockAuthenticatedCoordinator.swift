@@ -7,6 +7,4 @@
 
 import Foundation
 
-final class MockAuthenticatedCoordinator: AuthenticatedCoordinator {
-    
-}
+final class MockAuthenticatedCoordinator: AuthenticatedCoordinator {}

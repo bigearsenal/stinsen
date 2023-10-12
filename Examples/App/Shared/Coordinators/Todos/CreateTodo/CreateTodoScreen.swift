@@ -1,12 +1,12 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct CreateTodoScreen: View {
     @State private var text: String = ""
     @EnvironmentObject private var todosRouter: TodosCoordinator.Router
     @ObservedObject private var todosStore: TodosStore
-    
+
     var body: some View {
         VStack {
             RoundedTextField("Todo name", text: $text)
@@ -17,7 +17,7 @@ struct CreateTodoScreen: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+
     init(todosStore: TodosStore) {
         self.todosStore = todosStore
     }

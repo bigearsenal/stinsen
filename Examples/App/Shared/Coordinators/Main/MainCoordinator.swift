@@ -8,20 +8,19 @@ final class MainCoordinator: NavigationCoordinatable {
 
     @Root var unauthenticated = makeUnauthenticated
     @Root var authenticated = makeAuthenticated
-    
+
     @ViewBuilder func sharedView(_ view: AnyView) -> some View {
         view
             .onReceive(AuthenticationService.shared.$status, perform: { status in
                 switch status {
                 case .unauthenticated:
                     self.root(\.unauthenticated)
-                case .authenticated(let user):
+                case let .authenticated(user):
                     self.root(\.authenticated, user)
                 }
             })
-            
     }
-    
+
     @ViewBuilder func customize(_ view: AnyView) -> some View {
         #if targetEnvironment(macCatalyst)
             sharedView(view)
@@ -37,9 +36,9 @@ final class MainCoordinator: NavigationCoordinatable {
                     if let coordinator = self.hasRoot(\.authenticated) {
                         do {
                             let deepLink = try DeepLink(url: url, todosStore: coordinator.todosStore)
-                            
+
                             switch deepLink {
-                            case .todo(let id):
+                            case let .todo(id):
                                 coordinator
                                     .focusFirst(\.todos)
                                     .child
@@ -57,14 +56,14 @@ final class MainCoordinator: NavigationCoordinatable {
             sharedView(view)
         #endif
     }
-    
+
     deinit {
         print("Deinit MainCoordinator")
     }
 
     init() {
         switch AuthenticationService.shared.status {
-        case .authenticated(let user):
+        case let .authenticated(user):
             stack = NavigationStack(initial: \MainCoordinator.authenticated, user)
         case .unauthenticated:
             stack = NavigationStack(initial: \MainCoordinator.unauthenticated)

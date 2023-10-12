@@ -11,7 +11,7 @@ final class TestbedEnvironmentObjectCoordinator: NavigationCoordinatable {
     @Route(.push) var pushScreen = makePushScreen
     @Route(.modal) var modalCoordinator = makeModalCoordinator
     @Route(.push) var pushCoordinator = makePushCoordinator
-    
+
     deinit {
         print("Deinit TestbedEnvironmentObjectCoordinator")
     }

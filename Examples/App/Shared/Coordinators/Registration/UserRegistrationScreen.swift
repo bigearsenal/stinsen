@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct UserRegistrationScreen: View {
     @EnvironmentObject private var registrationRouter: RegistrationCoordinator.Router
@@ -24,4 +24,3 @@ struct UserRegistrationScreen_Previews: PreviewProvider {
         UserRegistrationScreen()
     }
 }
-

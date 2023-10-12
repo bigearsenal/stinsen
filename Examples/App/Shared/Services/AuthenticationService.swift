@@ -5,15 +5,15 @@ class AuthenticationService: ObservableObject {
         case authenticated(User)
         case unauthenticated
     }
-    
-    static var shared: AuthenticationService = AuthenticationService()
-    
+
+    static var shared: AuthenticationService = .init()
+
     @Published var status: Status {
         didSet {
             switch status {
             case .unauthenticated:
                 UserDefaults.standard.removeObject(forKey: "user")
-            case .authenticated(let user):
+            case let .authenticated(user):
                 let encoder = JSONEncoder()
                 let jsonString = try! encoder.encode(user)
                 UserDefaults.standard.setValue(jsonString, forKey: "user")
@@ -24,9 +24,9 @@ class AuthenticationService: ObservableObject {
     init() {
         let decoder = JSONDecoder()
         if let data = UserDefaults.standard.data(forKey: "user") {
-            self.status = try! Status.authenticated(decoder.decode(User.self, from: data))
+            status = try! Status.authenticated(decoder.decode(User.self, from: data))
         } else {
-            self.status = Status.unauthenticated
+            status = Status.unauthenticated
         }
     }
 }

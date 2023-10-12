@@ -9,9 +9,9 @@ struct ViewWrapperCoordinatorView<U: Coordinatable, T: ViewWrapperCoordinator<U,
     init(coordinator: T, @ViewBuilder _ view: @escaping (AnyView) -> V) {
         self.coordinator = coordinator
         self.view = view
-        self.childView = coordinator.child.view()
+        childView = coordinator.child.view()
     }
-    
+
     var body: some View {
         view(childView)
     }

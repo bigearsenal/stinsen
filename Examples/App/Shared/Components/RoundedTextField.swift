@@ -5,21 +5,21 @@ struct RoundedTextField: View {
     let placeholder: String
     let secure: Bool
     var text: Binding<String>
-    
+
     var body: some View {
         #if os(macOS)
-        standard
+            standard
         #elseif os(watchOS)
-        standard
+            standard
         #elseif os(tvOS)
-        standard
+            standard
         #elseif os(iOS)
-        ios
+            ios
         #else
-        standard
+            standard
         #endif
     }
-    
+
     @ViewBuilder var standard: some View {
         if secure {
             SecureField(placeholder, text: text)
@@ -27,7 +27,7 @@ struct RoundedTextField: View {
             TextField(placeholder, text: text)
         }
     }
-    
+
     @ViewBuilder var ios: some View {
         standard
             .padding()
@@ -35,7 +35,7 @@ struct RoundedTextField: View {
             .cornerRadius(5.0)
             .padding([.leading, .trailing])
     }
-    
+
     init(_ placeholder: String, text: Binding<String>, secure: Bool = false) {
         self.placeholder = placeholder
         self.text = text

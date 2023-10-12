@@ -6,12 +6,12 @@ public final class NavigationRouter<T>: Routable {
     public var coordinator: T {
         _coordinator.value as! T
     }
-    
+
     private var _coordinator: WeakRef<AnyObject>
-    
+
     public init(id: Int, coordinator: T) {
         self.id = id
-        self._coordinator = WeakRef(value: coordinator as AnyObject)
+        _coordinator = WeakRef(value: coordinator as AnyObject)
     }
 }
 
@@ -19,22 +19,22 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     /**
      Clears the stack.
      */
-    @discardableResult func popToRoot(_ action: (() -> ())? = nil) -> T {
+    @discardableResult func popToRoot(_ action: (() -> Void)? = nil) -> T {
         coordinator.popToRoot(action)
     }
-    
-    func pop(_ action: (() -> ())? = nil) {
-        coordinator.popTo(self.id - 1, action)
+
+    func pop(_ action: (() -> Void)? = nil) {
+        coordinator.popTo(id - 1, action)
     }
-    
-    func popLast(_ action: (() -> ())? = nil) {
+
+    func popLast(_ action: (() -> Void)? = nil) {
         coordinator.popLast(action)
     }
-    
-    func dismissCoordinator(_ action: (() -> ())? = nil) {
+
+    func dismissCoordinator(_ action: (() -> Void)? = nil) {
         coordinator.dismissCoordinator(action)
     }
-    
+
     /**
      Appends a view to the navigation stack.
 
@@ -47,7 +47,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> T {
         coordinator.route(to: route, input)
     }
-    
+
     /**
      Appends a coordinator to the navigation stack.
 
@@ -60,7 +60,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> Output {
         coordinator.route(to: route, input)
     }
-    
+
     /**
      Appends a coordinator to the navigation stack.
 
@@ -71,7 +71,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> Output {
         coordinator.route(to: route)
     }
-    
+
     /**
      Appends a view to the navigation stack.
 
@@ -82,13 +82,13 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> T {
         coordinator.route(to: route)
     }
-    
+
     /**
      Searches the stack for the first route that matches the route. If found, will remove
      everything after that route.
 
      - Parameter route: The route that will be focused.
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -97,13 +97,13 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> Output {
         try coordinator.focusFirst(route)
     }
-    
+
     /**
      Searches the stack for the first route that matches the route. If found, will remove
      everything after that route.
 
      - Parameter route: The route that will be focused.
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -112,7 +112,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> T {
         try coordinator.focusFirst(route)
     }
-    
+
     /**
      Searches the stack for the first route that matches the route. If found, will remove
      everything after that route.
@@ -120,7 +120,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
      - Parameter route: The route that will be focused.
      - Parameter input: The input that will be considered.
      - Parameter comparator: The function to use to determine if the inputs are equal
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -131,7 +131,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> Output {
         try coordinator.focusFirst(route, input, comparator: comparator)
     }
-    
+
     /**
      Searches the stack for the first route that matches the closure. If found, will remove
      everything after that route.
@@ -139,7 +139,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
      - Parameter route: The route that will be focused.
      - Parameter input: The input that will be considered.
      - Parameter comparator: The function to use to determine if the inputs are equal
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -150,14 +150,14 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> T {
         try coordinator.focusFirst(route, input, comparator: comparator)
     }
-    
+
     /**
      Searches the stack for the first route that matches the route. If found, will remove
      everything after that route.
 
      - Parameter route: The route that will be focused.
      - Parameter input: The input that will be considered. Since this function assumes input is Equatable, it will use the `==` function to determine equality.
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -167,14 +167,14 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> Output {
         try coordinator.focusFirst(route, input)
     }
-    
+
     /**
      Searches the stack for the first route that matches the closure. If found, will remove
      everything after that route.
 
      - Parameter route: The route that will be focused.
      - Parameter input: The input that will be considered. Since this function assumes input is Equatable, it will use the `==` function to determine equality.
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -184,13 +184,13 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> T {
         try coordinator.focusFirst(route, input)
     }
-    
+
     /**
      Searches the stack for the first route that matches the route. If found, will remove
      everything after that route.
 
      - Parameter route: The route that will be focused.
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -199,12 +199,13 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> Output {
         try coordinator.focusFirst(route)
     }
+
     /**
      Searches the stack for the first route that matches the closure. If found, will remove
      everything after that route.
 
      - Parameter route: The route that will be focused.
-     
+
      - Throws: `FocusError.routeNotFound`
                if the route was not found in the stack.
      */
@@ -213,31 +214,31 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) throws -> T {
         try coordinator.focusFirst(route)
     }
-    
+
     @discardableResult func root<Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Void, Output>>
     ) -> Output {
         return coordinator.root(route)
     }
-    
+
     @discardableResult func root<Output: View>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Void, Output>>
     ) -> T {
         return coordinator.root(route)
     }
-    
+
     @discardableResult func root<Input, Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>
     ) -> Output {
         return coordinator.root(route)
     }
-    
+
     @discardableResult func root<Input, Output: View>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>
     ) -> T {
         return coordinator.root(route)
     }
-    
+
     @discardableResult func root<Input, Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>,
         _ input: Input,
@@ -245,7 +246,7 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> Output {
         return coordinator.root(route, input, comparator: comparator)
     }
-    
+
     @discardableResult func root<Input, Output: View>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>,
         _ input: Input,
@@ -253,27 +254,27 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> T {
         return coordinator.root(route, input, comparator: comparator)
     }
-    
+
     @discardableResult func root<Input: Equatable, Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>,
         _ input: Input
     ) -> Output {
         return coordinator.root(route, input)
     }
-    
+
     @discardableResult func root<Input: Equatable, Output: View>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>,
         _ input: Input
     ) -> T {
         return coordinator.root(route, input)
     }
-    
+
     func isRoot<Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Void, Output>>
     ) -> Bool {
         return coordinator.isRoot(route)
     }
-    
+
     func isRootk<Output: View>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Void, Output>>
     ) -> Bool {
@@ -321,26 +322,26 @@ public extension NavigationRouter where T: NavigationCoordinatable {
     ) -> Bool {
         return coordinator.isRoot(route, input, comparator: comparator)
     }
-    
+
     @discardableResult func hasRoot<Input, Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>
     ) -> Output? {
         return coordinator.hasRoot(route)
     }
-    
+
     @discardableResult func hasRoot<Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Void, Output>>
     ) -> Output? {
         return coordinator.hasRoot(route)
     }
-    
+
     @discardableResult func hasRoot<Input: Equatable, Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>,
         _ input: Input
     ) -> Output? {
         return coordinator.hasRoot(route, input)
     }
-    
+
     @discardableResult func hasRoot<Input: Equatable, Output: Coordinatable>(
         _ route: KeyPath<T, Transition<T, RootSwitch, Input, Output>>,
         _ input: Input,

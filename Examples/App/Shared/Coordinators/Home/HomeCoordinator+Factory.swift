@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 extension HomeCoordinator {
     @ViewBuilder func makeStart() -> some View {
