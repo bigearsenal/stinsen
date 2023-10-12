@@ -74,11 +74,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
             }, content: { () -> AnyView in
                 { () -> AnyView in
                     if let view = presentationHelper.presented?.view {
-                        if let presentationDetents = presentationHelper.presented?.type.presentationDetents {
-                            return AnyView(view.presentationDetents(presentationDetents))
-                        } else {
-                            return AnyView(view)
-                        }
+                        return AnyView(view)
                     } else {
                         return AnyView(EmptyView())
                     }

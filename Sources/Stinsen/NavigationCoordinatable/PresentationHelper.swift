@@ -22,7 +22,7 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                 switch value.presentationType {
                 case .modal, .sheet:
                     if presentable is AnyView {
-                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+                        var view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
 
                         #if os(macOS)
                             presented = Presented(
@@ -36,15 +36,19 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                                 type: value.presentationType
                             )
                         #else
+                            view = AnyView(
+                                NavigationView(
+                                    content: {
+                                        view.navigationBarHidden(true)
+                                    }
+                                )
+                                .navigationViewStyle(StackNavigationViewStyle())
+                            )
+                            if let detents = value.presentationType.presentationDetents {
+                                view = AnyView(view.presentationDetents(detents))
+                            }
                             presented = Presented(
-                                view: AnyView(
-                                    NavigationView(
-                                        content: {
-                                            view.navigationBarHidden(true)
-                                        }
-                                    )
-                                    .navigationViewStyle(StackNavigationViewStyle())
-                                ),
+                                view: view,
                                 type: value.presentationType
                             )
                         #endif
