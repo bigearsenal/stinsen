@@ -20,9 +20,9 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
             if let value = value[safe: nextId] {
                 let presentable = value.presentable
                 switch value.presentationType {
-                case .modal:
+                case .modal, .sheet:
                     if presentable is AnyView {
-                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+                        var view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
 
                         #if os(macOS)
                             presented = Presented(
@@ -33,22 +33,26 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                                         }
                                     )
                                 ),
-                                type: .modal
+                                type: value.presentationType
                             )
                         #else
+                            view = AnyView(
+                                SwiftUI.NavigationStack {
+                                    view.navigationBarHidden(true)
+                                }
+                            )
+                            if let detents = value.presentationType.presentationDetents {
+                                view = AnyView(view.presentationDetents(detents))
+                            }
                             presented = Presented(
-                                view: AnyView(
-                                    SwiftUI.NavigationStack {
-                                        view.navigationBarHidden(true)
-                                    }
-                                ),
-                                type: .modal
+                                view: view,
+                                type: value.presentationType
                             )
                         #endif
                     } else {
                         presented = Presented(
                             view: presentable.view(),
-                            type: .modal
+                            type: value.presentationType
                         )
                     }
                 case .push:

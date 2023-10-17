@@ -58,7 +58,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                 }()
             }
             .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
-                presentationHelper.presented?.type.isModal == true
+                presentationHelper.presented?.type.isSheet == true
             }, set: { _ in
                 self.coordinator.appear(self.id)
             }), onDismiss: {
