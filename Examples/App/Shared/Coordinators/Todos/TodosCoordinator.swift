@@ -7,7 +7,7 @@ final class TodosCoordinator: NavigationCoordinatable {
 
     @Root var start = makeStart
     @Route(.push) var todo = makeTodo
-    @Route(.modal) var createTodo = makeCreateTodo
+    @Route(.fullScreen) var createTodo = makeCreateTodo
 
     let todosStore: TodosStore
 

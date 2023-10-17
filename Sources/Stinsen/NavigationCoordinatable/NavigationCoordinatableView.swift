@@ -41,29 +41,22 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
     @ViewBuilder
     var commonView: some View {
         (id == -1 ? AnyView(self.coordinator.customize(AnyView(root.item.child.view()))) : AnyView(self.start!))
-            .background(
-                NavigationLink(
-                    destination: { () -> AnyView in
-                        if let view = presentationHelper.presented?.view {
-                            return AnyView(view.onDisappear {
-                                self.coordinator.stack.dismissalAction[id]?()
-                                self.coordinator.stack.dismissalAction[id] = nil
-                            })
-                        } else {
-                            return AnyView(EmptyView())
-                        }
-                    }(),
-                    isActive: Binding<Bool>.init(get: { () -> Bool in
-                        presentationHelper.presented?.type.isPush == true
-                    }, set: { _ in
-                        self.coordinator.appear(self.id)
-                    }),
-                    label: {
-                        EmptyView()
+            .navigationDestination(isPresented: Binding<Bool>.init(get: { () -> Bool in
+                presentationHelper.presented?.type.isPush == true
+            }, set: { _ in
+                self.coordinator.appear(self.id)
+            })) {
+                { () -> AnyView in
+                    if let view = presentationHelper.presented?.view {
+                        return AnyView(view.onDisappear {
+                            self.coordinator.stack.dismissalAction[id]?()
+                            self.coordinator.stack.dismissalAction[id] = nil
+                        })
+                    } else {
+                        return AnyView(EmptyView())
                     }
-                )
-                .hidden()
-            )
+                }()
+            }
             .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
                 presentationHelper.presented?.type.isSheet == true
             }, set: { _ in

@@ -14,6 +14,10 @@ struct CreateTodoScreen: View {
                 todosStore.all.append(Todo(name: text))
                 todosRouter.popToRoot()
             }
+
+            Button("Cancel") {
+                todosRouter.popLast()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -25,6 +29,9 @@ struct CreateTodoScreen: View {
 
 struct CreateTodoScreen_Previews: PreviewProvider {
     static var previews: some View {
-        CreateTodoScreen(todosStore: TodosStore(user: User(username: "user@example.com", accessToken: UUID().uuidString)))
+        CreateTodoScreen(todosStore: TodosStore(user: User(
+            username: "user@example.com",
+            accessToken: UUID().uuidString
+        )))
     }
 }
