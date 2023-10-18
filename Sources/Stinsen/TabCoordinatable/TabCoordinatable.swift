@@ -51,7 +51,6 @@ public extension TabCoordinatable {
         if let coordinator = unwrappedCoordinator as? RootPoppable {
             coordinator.popToRoot(action)
         }
-        
     }
 
     func dismissChild<T: Coordinatable>(coordinator _: T, action _: (() -> Void)?) {
