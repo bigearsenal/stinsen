@@ -46,13 +46,22 @@ public extension TabCoordinatable {
         self
     }
 
+    @discardableResult
+    func popToRoot(action: (() -> Void)? = nil) -> Self {
+        let unwrappedCoordinator = child.activeItem?.coordinator()
+        if let coordinator = unwrappedCoordinator as? RootPoppable {
+            coordinator.popToRoot(action)
+        }
+        return self
+    }
+
     func dismissChild<T: Coordinatable>(coordinator _: T, action _: (() -> Void)?) {
         fatalError("Not implemented")
     }
 
     var parent: ChildDismissable? {
         get {
-            return child.parent
+            child.parent
         } set {
             child.parent = newValue
         }
@@ -78,6 +87,9 @@ public extension TabCoordinatable {
                         },
                         onTapped: { [unowned self] isRepeat in
                             val.onTapped(isRepeat, coordinator: self)
+                        },
+                        coordinator: {
+                            val.coordinator
                         }
                     )
                 )
@@ -88,7 +100,7 @@ public extension TabCoordinatable {
     }
 
     func customize(_ view: AnyView) -> some View {
-        return view
+        view
     }
 
     func view() -> AnyView {

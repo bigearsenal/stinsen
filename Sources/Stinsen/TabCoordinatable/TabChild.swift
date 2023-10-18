@@ -6,6 +6,7 @@ struct TabChildItem {
     let keyPathIsEqual: (Any) -> Bool
     let tabItem: (Bool) -> AnyView
     let onTapped: (Bool) -> Void
+    let coordinator: () -> (any Coordinatable)?
 }
 
 /// Wrapper around childCoordinators
