@@ -47,7 +47,7 @@ public extension TabCoordinatable {
     }
 
     func popToRoot(action: (() -> Void)?) {
-        let unwrappedCoordinator = child.activeItem.coordinator()
+        let unwrappedCoordinator = child.activeItem?.coordinator()
         if let coordinator = unwrappedCoordinator as? RootPoppable {
             coordinator.popToRoot(action)
         }
