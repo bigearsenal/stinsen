@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 protocol Outputable {
+    var coordinator: (any Coordinatable)? { get }
     func using(coordinator: Any) -> ViewPresentable
     func tabItem(active: Bool, coordinator: Any) -> AnyView
     func onTapped(_ isRepeat: Bool, coordinator: Any)
@@ -9,12 +10,15 @@ protocol Outputable {
 
 public class Content<T: TabCoordinatable, Output: ViewPresentable>: Outputable {
     func tabItem(active: Bool, coordinator: Any) -> AnyView {
-        return tabItem(coordinator as! T)(active)
+        tabItem(coordinator as! T)(active)
     }
 
     func using(coordinator: Any) -> ViewPresentable {
         let closureOutput = closure(coordinator as! T)()
         output = closureOutput
+        if let coordinator = closureOutput as? (any Coordinatable) {
+            self.coordinator = coordinator
+        }
         return closureOutput
     }
 
@@ -27,6 +31,7 @@ public class Content<T: TabCoordinatable, Output: ViewPresentable>: Outputable {
     let onTapped: (T) -> ((Bool, Output) -> Void)
 
     private var output: Output?
+    var coordinator: (any Coordinatable)?
 
     init<TabItem: View>(
         closure: @escaping ((T) -> (() -> Output)),

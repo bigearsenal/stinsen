@@ -78,6 +78,9 @@ public extension TabCoordinatable {
                         },
                         onTapped: { [unowned self] isRepeat in
                             val.onTapped(isRepeat, coordinator: self)
+                        },
+                        coordinator: {
+                            val.coordinator
                         }
                     )
                 )
