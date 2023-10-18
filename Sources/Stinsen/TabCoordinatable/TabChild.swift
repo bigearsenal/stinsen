@@ -15,9 +15,14 @@ public class TabChild: ObservableObject {
     public let startingItems: [AnyKeyPath]
 
     @Published var activeItem: TabChildItem!
-
-    var allItems: [TabChildItem]!
-
+    
+    var allItems: [TabChildItem]! {
+        didSet {
+            let newItem = allItems?[safe: activeTab]
+            activeItem = newItem
+        }
+    }
+    
     public var activeTab: Int {
         didSet {
             allItems[activeTab].onTapped(oldValue == activeTab)
