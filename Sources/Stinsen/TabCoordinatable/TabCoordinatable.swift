@@ -46,13 +46,21 @@ public extension TabCoordinatable {
         self
     }
 
+    func popToRoot(action: (() -> Void)?) {
+        let unwrappedCoordinator = child.activeItem.coordinator()
+        if let coordinator = unwrappedCoordinator as? RootPoppable {
+            coordinator.popToRoot(action)
+        }
+        
+    }
+
     func dismissChild<T: Coordinatable>(coordinator _: T, action _: (() -> Void)?) {
         fatalError("Not implemented")
     }
 
     var parent: ChildDismissable? {
         get {
-            return child.parent
+            child.parent
         } set {
             child.parent = newValue
         }
@@ -91,7 +99,7 @@ public extension TabCoordinatable {
     }
 
     func customize(_ view: AnyView) -> some View {
-        return view
+        view
     }
 
     func view() -> AnyView {
