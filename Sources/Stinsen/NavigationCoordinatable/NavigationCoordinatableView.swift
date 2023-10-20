@@ -73,6 +73,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                     }
                 }()
             })
+            .toolbar(.hidden, for: .tabBar)
     }
 
     init(id: Int, coordinator: T) {

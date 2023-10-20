@@ -1,10 +1,10 @@
 import Foundation
 import SwiftUI
 
-struct TabChildItem {
-    let presentable: ViewPresentable
+public struct TabChildItem {
+    public let presentable: ViewPresentable
     let keyPathIsEqual: (Any) -> Bool
-    let tabItem: (Bool) -> AnyView
+    public let tabItem: (Bool) -> AnyView
     let onTapped: (Bool) -> Void
     let coordinator: () -> (any Coordinatable)?
 }
@@ -16,14 +16,14 @@ public class TabChild: ObservableObject {
     public let startingItems: [AnyKeyPath]
 
     @Published var activeItem: TabChildItem!
-    
-    var allItems: [TabChildItem]! {
+
+    public var allItems: [TabChildItem]! {
         didSet {
             let newItem = allItems?[safe: activeTab]
             activeItem = newItem
         }
     }
-    
+
     public var activeTab: Int {
         didSet {
             allItems[activeTab].onTapped(oldValue == activeTab)
