@@ -5,7 +5,6 @@ import SwiftUI
 open class ViewWrapperCoordinator<T: Coordinatable, V: View>: Coordinatable, RootPoppable {
     public func dismissChild<CC: Coordinatable>(coordinator _: CC, action: (() -> Void)?) {
         guard let parent = parent else {
-            assertionFailure("Can not dismiss a coordinator since no coordinator is presented.")
             return
         }
 

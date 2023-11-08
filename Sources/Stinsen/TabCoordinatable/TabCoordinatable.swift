@@ -149,7 +149,7 @@ public extension TabCoordinatable {
 
             return true
         }) else {
-            fatalError()
+            return self
         }
 
         child.activeTab = value.offset

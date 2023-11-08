@@ -304,7 +304,6 @@ public extension NavigationCoordinatable {
 
             return presentable.id == coordinator.id
         }) else {
-            assertionFailure("Can not dismiss child when coordinator is top of the stack.")
             return
         }
 
@@ -313,7 +312,6 @@ public extension NavigationCoordinatable {
 
     func dismissCoordinator(_ action: (() -> Void)? = nil) {
         guard let parent = stack.parent else {
-            assertionFailure("Can not dismiss coordinator when parent is null.")
             return
         }
         parent.dismissChild(coordinator: self, action: action)
