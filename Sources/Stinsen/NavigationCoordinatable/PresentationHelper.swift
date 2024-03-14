@@ -1,138 +1,178 @@
-import Foundation
 import Combine
+import Foundation
 import SwiftUI
 
 final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
     private let id: Int
     let navigationStack: NavigationStack<T>
     private var cancellables = Set<AnyCancellable>()
-    
+
     @Published var presented: Presented?
-    
+
     func setupPresented(coordinator: T) {
-        let value = self.navigationStack.value
-        
+        let value = navigationStack.value
+
         let nextId = id + 1
-        
+
         // Only apply updates on last screen in navigation stack
         // This check is important to get the behaviour as using a bool-state in the view that you set
-        if value.count - 1 == nextId, self.presented == nil {
+        if value.count - 1 == nextId, presented == nil {
             if let value = value[safe: nextId] {
                 let presentable = value.presentable
                 switch value.presentationType {
-                case .modal:
+                case .modal, .sheet:
                     if presentable is AnyView {
-                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+                        var view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
 
-                        #if os(macOS)
-                        self.presented = Presented(
-                            view: AnyView(
-                                NavigationView(
-                                    content: {
-                                        view
-                                    }
+                        if Bool.navigationStackAvailable {
+                            #if os(macOS)
+                                presented = Presented(
+                                    view: AnyView(
+                                        SwiftUI.NavigationStack(
+                                            view
+                                        )
+                                    ),
+                                    type: value.presentationType
                                 )
-                            ),
-                            type: .modal
-                        )
-                        #else
-                        self.presented = Presented(
-                            view: AnyView(
-                                NavigationView(
-                                    content: {
+                            #else
+                                view = AnyView(
+                                    SwiftUI.NavigationStack {
                                         view.navigationBarHidden(true)
                                     }
                                 )
-                                .navigationViewStyle(StackNavigationViewStyle())
-                            ),
-                            type: .modal
-                        )
-                        #endif
+                                if let detents = value.presentationType.presentationDetents {
+                                    view = AnyView(view.presentationDetents(detents))
+                                }
+                                presented = Presented(
+                                    view: view,
+                                    type: value.presentationType
+                                )
+                            #endif
+                        } else {
+                            #if os(macOS)
+                                presented = Presented(
+                                    view: AnyView(
+                                        NavigationView(
+                                            content: {
+                                                view
+                                            }
+                                        )
+                                    ),
+                                    type: value.presentationType
+                                )
+                            #else
+                                view = AnyView(
+                                    SwiftUI.NavigationView {
+                                        view.navigationBarHidden(true)
+                                    }
+                                    .navigationViewStyle(StackNavigationViewStyle())
+                                )
+                                if let detents = value.presentationType.presentationDetents {
+                                    view = AnyView(view.presentationDetents(detents))
+                                }
+                                presented = Presented(
+                                    view: view,
+                                    type: value.presentationType
+                                )
+                            #endif
+                        }
+
                     } else {
-                        self.presented = Presented(
+                        presented = Presented(
                             view: presentable.view(),
-                            type: .modal
+                            type: value.presentationType
                         )
                     }
                 case .push:
                     if presentable is AnyView {
                         let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
 
-                        self.presented = Presented(
+                        presented = Presented(
                             view: view,
                             type: .push
                         )
                     } else {
-                        self.presented = Presented(
+                        presented = Presented(
                             view: presentable.view(),
                             type: .push
                         )
                     }
-                case.fullScreen:
-                    if #available(iOS 14, tvOS 14, watchOS 7, *) {
-                        if presentable is AnyView {
-                            let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+                case .fullScreen:
+                    if presentable is AnyView {
+                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
 
+                        if Bool.navigationStackAvailable {
                             #if os(macOS)
-                            self.presented = Presented(
-                                view: AnyView(
-                                    NavigationView(
-                                        content: {
+                                presented = Presented(
+                                    view: AnyView(
+                                        SwiftUI.NavigationStack(
                                             view
-                                        }
-                                    )
-                                ),
-                                type: .fullScreen
-                            )
+                                        )
+                                    ),
+                                    type: .fullScreen
+                                )
                             #else
-                            self.presented = Presented(
-                                view: AnyView(
-                                    NavigationView(
-                                        content: {
-                                            #if os(macOS)
-                                            view
-                                            #else
+                                presented = Presented(
+                                    view: AnyView(
+                                        SwiftUI.NavigationStack {
                                             view.navigationBarHidden(true)
-                                            #endif
                                         }
-                                    )
-                                    .navigationViewStyle(StackNavigationViewStyle())
-                                ),
-                                type: .fullScreen
-                            )
+                                    ),
+                                    type: .fullScreen
+                                )
                             #endif
                         } else {
-                            self.presented = Presented(
-                                view: AnyView(
-                                    presentable.view()
-                                ),
-                                type: .fullScreen
-                            )
+                            #if os(macOS)
+                                presented = Presented(
+                                    view: AnyView(
+                                        SwiftUI.NavigationView(
+                                            view
+                                        )
+                                    ),
+                                    type: .fullScreen
+                                )
+                            #else
+                                presented = Presented(
+                                    view: AnyView(
+                                        SwiftUI.NavigationView {
+                                            view.navigationBarHidden(true)
+                                        }
+                                        .navigationViewStyle(StackNavigationViewStyle())
+                                    ),
+                                    type: .fullScreen
+                                )
+                            #endif
                         }
+
                     } else {
-                        fatalError()
+                        presented = Presented(
+                            view: AnyView(
+                                presentable.view()
+                            ),
+                            type: .fullScreen
+                        )
                     }
                 }
             }
         }
     }
-    
+
     init(id: Int, coordinator: T) {
         self.id = id
-        self.navigationStack = coordinator.stack
-        
-        self.setupPresented(coordinator: coordinator)
-        
+        navigationStack = coordinator.stack
+
+        setupPresented(coordinator: coordinator)
+
         navigationStack.$value.dropFirst().sink { [weak self, coordinator] _ in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                
+
                 self.setupPresented(coordinator: coordinator)
             }
         }
         .store(in: &cancellables)
-        
-        navigationStack.poppedTo.filter { int -> Bool in int <= id }.sink { [weak self] int in
+
+        navigationStack.poppedTo.filter { int -> Bool in int <= id }.sink { [weak self] _ in
             // remove any and all presented views if my id is less than or equal to the view being popped to!
             DispatchQueue.main.async { [weak self] in
                 self?.presented = nil

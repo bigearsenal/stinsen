@@ -36,7 +36,7 @@ extension View {
     }
 }
 
-extension Bool {
+public extension Bool {
     static var navigationStackAvailable: Bool {
         if #available(iOS 17.0, watchOS 10.0, tvOS 17.0, macOS 14, *) {
             // It's iOS 13 so return true.

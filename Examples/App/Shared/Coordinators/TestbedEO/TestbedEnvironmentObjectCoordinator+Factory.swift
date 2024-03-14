@@ -8,8 +8,14 @@ extension TestbedEnvironmentObjectCoordinator {
     }
 
     @ViewBuilder func makeModalScreen() -> some View {
-        SwiftUI.NavigationStack {
-            TestbedEnvironmentObjectScreen()
+        if Bool.navigationStackAvailable {
+            SwiftUI.NavigationStack {
+                TestbedEnvironmentObjectScreen()
+            }
+        } else {
+            SwiftUI.NavigationView {
+                TestbedEnvironmentObjectScreen()
+            }
         }
     }
 
