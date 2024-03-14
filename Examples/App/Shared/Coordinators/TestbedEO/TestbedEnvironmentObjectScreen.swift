@@ -37,6 +37,10 @@ struct TestbedEnvironmentObjectScreen: View {
                  }
                   */
                 RoundedButton("Dismiss me!") {
+                    if testbed.id != -1 {
+                        testbed.popLast()
+                        return
+                    }
                     testbed.dismissCoordinator {
                         print("bye!")
                     }
