@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-public protocol NavigationCoordinatable: Coordinatable {
+public protocol NavigationCoordinatable: Coordinatable, RootPoppable {
     typealias Route = NavigationRoute
     typealias Root = NavigationRoute
     typealias Router = NavigationRouter<Self>
@@ -306,7 +306,6 @@ public extension NavigationCoordinatable {
             
             return presentable.id == coordinator.id
         }) else {
-            assertionFailure("Can not dismiss child when coordinator is top of the stack.")
             return
         }
         
@@ -315,7 +314,6 @@ public extension NavigationCoordinatable {
     
     func dismissCoordinator(_ action: (() -> ())? = nil) {
         guard let parent = stack.parent else {
-            assertionFailure("Can not dismiss coordinator when parent is null.")
             return
         }
         parent.dismissChild(coordinator: self, action: action)
