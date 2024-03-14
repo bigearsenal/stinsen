@@ -1,7 +1,7 @@
 import Foundation
 
 @main
-struct MainApp {
+enum MainApp {
     static func main() {
         StinsenApp.main()
     }

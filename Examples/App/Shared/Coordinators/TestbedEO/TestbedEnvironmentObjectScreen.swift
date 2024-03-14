@@ -1,11 +1,11 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct TestbedEnvironmentObjectScreen: View {
     @EnvironmentObject var testbed: TestbedEnvironmentObjectCoordinator.Router
     @State var text: String = ""
-    
+
     var body: some View {
         ScrollView {
             VStack {
@@ -14,16 +14,17 @@ struct TestbedEnvironmentObjectScreen: View {
                 RoundedButton("Modal screen") {
                     testbed.route(to: \.modalScreen)
                 }
+                RoundedButton("Sheet with presentationDetents") {
+                    testbed.route(to: \.sheetWithPresentationDetents)
+                }
                 RoundedButton("Push screen") {
                     testbed.route(to: \.pushScreen)
                 }
                 /*
-                if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-                    RoundedButton("Cover screen") {
-                        testbed.route(to: .coverScreen)
-                    }
-                }
-                 */
+                 RoundedButton("Cover screen") {
+                    testbed.route(to: .coverScreen)
+                 }
+                  */
                 RoundedButton("Modal coordinator") {
                     testbed.route(to: \.modalCoordinator)
                 }
@@ -31,12 +32,10 @@ struct TestbedEnvironmentObjectScreen: View {
                     testbed.route(to: \.pushCoordinator)
                 }
                 /*
-                if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-                    RoundedButton("Cover coordinator") {
-                        testbed.route(to: .coverCoordinator)
-                    }
-                }
-                 */
+                 RoundedButton("Cover coordinator") {
+                    testbed.route(to: .coverCoordinator)
+                 }
+                  */
                 RoundedButton("Dismiss me!") {
                     testbed.dismissCoordinator {
                         print("bye!")

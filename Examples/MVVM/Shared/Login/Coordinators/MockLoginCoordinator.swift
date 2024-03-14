@@ -9,8 +9,8 @@ import Foundation
 
 final class MockLoginCoordinator: LoginCoordinator {
     var routed: Bool = false
-    
+
     func routeToAuthenticated() {
-        self.routed = true
+        routed = true
     }
 }

@@ -11,7 +11,7 @@ struct LoginView<ViewModel: LoginViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     @State var error: Error?
     @State var loggingIn: Bool = false
-    
+
     var body: some View {
         VStack {
             TextField("Username", text: $viewModel.username)
@@ -25,7 +25,7 @@ struct LoginView<ViewModel: LoginViewModel>: View {
                     .foregroundColor(.red)
             }
             if loggingIn {
-               ProgressView()
+                ProgressView()
             } else {
                 Button("Login") {
                     loggingIn = true
@@ -41,7 +41,7 @@ struct LoginView<ViewModel: LoginViewModel>: View {
             }
         }
     }
-    
+
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }

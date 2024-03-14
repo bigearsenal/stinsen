@@ -1,11 +1,11 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct TodosScreen: View {
     @ObservedObject private var todosStore: TodosStore
     @EnvironmentObject private var todosRouter: TodosCoordinator.Router
-    
+
     @ViewBuilder var button: some View {
         Button(action: {
             todosRouter.route(to: \.createTodo)
@@ -13,11 +13,11 @@ struct TodosScreen: View {
             Image(systemName: "folder.badge.plus")
         })
     }
-    
+
     @ViewBuilder var content: some View {
         ScrollView {
             #if !os(iOS)
-            button
+                button
             #endif
             if todosStore.all.isEmpty {
                 InfoText("You have no stored todos.")
@@ -33,18 +33,18 @@ struct TodosScreen: View {
         }
         .navigationTitle(with: "Todos")
     }
-    
+
     @ViewBuilder var body: some View {
         #if os(iOS)
-        content
-        .navigationBarItems(
-            trailing: button
-        )
+            content
+                .navigationBarItems(
+                    trailing: button
+                )
         #else
-        content
+            content
         #endif
     }
-    
+
     init(todosStore: TodosStore) {
         self.todosStore = todosStore
     }

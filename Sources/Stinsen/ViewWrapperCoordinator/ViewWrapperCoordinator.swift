@@ -2,14 +2,21 @@ import Foundation
 import SwiftUI
 
 /// The NavigationViewCoordinator is used to represent a coordinator with a NavigationView
-open class ViewWrapperCoordinator<T: Coordinatable, V: View>: Coordinatable {
-    public func dismissChild<T: Coordinatable>(coordinator: T, action: (() -> Void)?) {
-        guard let parent = self.parent else {
-            assertionFailure("Can not dismiss a coordinator since no coordinator is presented.")
+open class ViewWrapperCoordinator<T: Coordinatable, V: View>: Coordinatable, RootPoppable {
+    public func dismissChild<CC: Coordinatable>(coordinator _: CC, action: (() -> Void)?) {
+        guard let parent = parent else {
             return
         }
-        
+
         parent.dismissChild(coordinator: self, action: action)
+    }
+
+    @discardableResult
+    public func popToRoot(_ action: (() -> Void)?) -> Self {
+        if let coordinator = child as? RootPoppable {
+            coordinator.popToRoot(action)
+        }
+        return self
     }
 
     public weak var parent: ChildDismissable?
@@ -21,16 +28,16 @@ open class ViewWrapperCoordinator<T: Coordinatable, V: View>: Coordinatable {
             ViewWrapperCoordinatorView(coordinator: self, viewFactory(self))
         )
     }
-    
+
     public init(_ childCoordinator: T, _ view: @escaping (AnyView) -> V) {
-        self.child = childCoordinator
-        self.viewFactory = { _ in { view($0) } }
-        self.child.parent = self
+        child = childCoordinator
+        viewFactory = { _ in { view($0) } }
+        child.parent = self
     }
-    
+
     public init(_ childCoordinator: T, _ view: @escaping (any Coordinatable) -> (AnyView) -> V) {
-        self.child = childCoordinator
-        self.viewFactory = view
-        self.child.parent = self
+        child = childCoordinator
+        viewFactory = view
+        child.parent = self
     }
 }

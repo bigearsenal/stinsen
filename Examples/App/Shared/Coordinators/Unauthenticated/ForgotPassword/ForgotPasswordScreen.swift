@@ -16,7 +16,7 @@ struct ForgotPasswordScreen: View {
                 RoundedTextField("Username", text: $text)
                 Spacer(minLength: 32)
                 RoundedButton("OK") {
-                    services.forgotPassword.forgot(username: text) { 
+                    services.forgotPassword.forgot(username: text) {
                         unauthenticatedRouter.popToRoot()
                     }
                 }
@@ -24,7 +24,7 @@ struct ForgotPasswordScreen: View {
             .navigationTitle(with: "Forgot password")
         }
     }
-    
+
     init(services: UnauthenticatedServices) {
         self.services = services
     }

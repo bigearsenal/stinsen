@@ -6,13 +6,13 @@
 //
 
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 final class DefaultAuthenticatedCoordinator: AuthenticatedCoordinator, NavigationCoordinatable {
     var stack = NavigationStack(initial: \DefaultAuthenticatedCoordinator.start)
     @Root var start = makeStart
-    
+
     func makeStart() -> some View {
         AuthenticatedView()
     }

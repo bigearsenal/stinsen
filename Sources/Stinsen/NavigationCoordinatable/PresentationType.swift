@@ -4,9 +4,9 @@ import SwiftUI
 public enum PresentationType {
     case modal
     case push
-    @available(iOS 14, tvOS 14, watchOS 7, *)
     case fullScreen
-    
+    case sheet(presentationDetents: Set<PresentationDetent>)
+
     var isModal: Bool {
         switch self {
         case .modal:
@@ -15,7 +15,16 @@ public enum PresentationType {
             return false
         }
     }
-    
+
+    var isSheet: Bool {
+        switch self {
+        case .modal, .sheet:
+            return true
+        default:
+            return false
+        }
+    }
+
     var isPush: Bool {
         switch self {
         case .push:
@@ -24,14 +33,22 @@ public enum PresentationType {
             return false
         }
     }
-    
-    @available(iOS 14, tvOS 14, watchOS 7, *)
+
     var isFullScreen: Bool {
         switch self {
         case .fullScreen:
             return true
         default:
             return false
+        }
+    }
+
+    var presentationDetents: Set<PresentationDetent>? {
+        switch self {
+        case let .sheet(presentationDetents):
+            return presentationDetents
+        default:
+            return nil
         }
     }
 }

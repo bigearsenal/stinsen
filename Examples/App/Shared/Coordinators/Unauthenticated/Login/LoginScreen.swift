@@ -7,7 +7,7 @@ struct LoginScreen: View {
     @EnvironmentObject private var mainRouter: MainCoordinator.Router
     @EnvironmentObject private var unauthenticatedRouter: UnauthenticatedCoordinator.Router
     private let services: UnauthenticatedServices
-    
+
     @State private var username: String = "user@example.com"
     @State private var password: String = "password"
 
@@ -37,7 +37,7 @@ struct LoginScreen: View {
         .navigationTitle(with: "Welcome")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+
     init(services: UnauthenticatedServices) {
         self.services = services
     }
