@@ -78,8 +78,12 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         }
 
                     } else {
+                        var view = presentable.view()
+                        if let detents = value.presentationType.presentationDetents {
+                            view = AnyView(view.presentationDetents(detents))
+                        }
                         presented = Presented(
-                            view: presentable.view(),
+                            view: view,
                             type: value.presentationType
                         )
                     }
