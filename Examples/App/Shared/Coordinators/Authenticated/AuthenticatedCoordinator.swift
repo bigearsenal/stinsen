@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 final class AuthenticatedCoordinator: TabCoordinatable {
     var child = TabChild(
@@ -8,10 +8,10 @@ final class AuthenticatedCoordinator: TabCoordinatable {
             \AuthenticatedCoordinator.home,
             \AuthenticatedCoordinator.todos,
             \AuthenticatedCoordinator.profile,
-            \AuthenticatedCoordinator.testbed
+            \AuthenticatedCoordinator.testbed,
         ]
     )
-    
+
     let todosStore: TodosStore
     let user: User
 
@@ -19,12 +19,12 @@ final class AuthenticatedCoordinator: TabCoordinatable {
     @Route(tabItem: makeTodosTab) var todos = makeTodos
     @Route(tabItem: makeProfileTab) var profile = makeProfile
     @Route(tabItem: makeTestbedTab, onTapped: onTestbedTapped) var testbed = makeTestbed
-    
+
     init(user: User) {
-        self.todosStore = TodosStore(user: user)
+        todosStore = TodosStore(user: user)
         self.user = user
     }
-    
+
     deinit {
         print("Deinit AuthenticatedCoordinator")
     }

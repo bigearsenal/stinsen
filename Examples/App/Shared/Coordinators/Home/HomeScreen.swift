@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct HomeScreen: View {
     @EnvironmentObject private var authenticatedRouter: AuthenticatedCoordinator.Router
@@ -28,7 +28,7 @@ struct HomeScreen: View {
         }
         .navigationTitle(with: "Home")
     }
-    
+
     init(todosStore: TodosStore) {
         self.todosStore = todosStore
     }
@@ -39,4 +39,3 @@ struct HomeScreen_Previews: PreviewProvider {
         HomeScreen(todosStore: TodosStore(user: User(username: "user@example.com", accessToken: UUID().uuidString)))
     }
 }
-

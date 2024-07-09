@@ -1,26 +1,32 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 extension TestbedEnvironmentObjectCoordinator {
     @ViewBuilder func makePushScreen() -> some View {
         TestbedEnvironmentObjectScreen()
     }
-    
+
     @ViewBuilder func makeModalScreen() -> some View {
-        NavigationView {
-            TestbedEnvironmentObjectScreen()
+        if Bool.navigationStackAvailable {
+            SwiftUI.NavigationStack {
+                TestbedEnvironmentObjectScreen()
+            }
+        } else {
+            SwiftUI.NavigationView {
+                TestbedEnvironmentObjectScreen()
+            }
         }
     }
-    
+
     func makePushCoordinator() -> TestbedEnvironmentObjectCoordinator {
-        return TestbedEnvironmentObjectCoordinator()
+        TestbedEnvironmentObjectCoordinator()
     }
-    
+
     func makeModalCoordinator() -> NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator> {
-        return NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
+        NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
     }
-    
+
     @ViewBuilder func makeStart() -> some View {
         TestbedEnvironmentObjectScreen()
     }

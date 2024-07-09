@@ -1,15 +1,15 @@
-import SwiftUI
 import Foundation
+import SwiftUI
 
 public class TabRouter<T>: Routable {
     public var coordinator: T {
         _coordinator.value as! T
     }
-    
+
     private var _coordinator: WeakRef<AnyObject>
-    
+
     public init(coordinator: T) {
-        self._coordinator = WeakRef(value: coordinator as AnyObject)
+        _coordinator = WeakRef(value: coordinator as AnyObject)
     }
 }
 
@@ -22,9 +22,9 @@ public extension TabRouter where T: TabCoordinatable {
     @discardableResult func focusFirst<Output: Coordinatable>(
         _ route: KeyPath<T, Content<T, Output>>
     ) -> Output {
-        self.coordinator.focusFirst(route)
+        coordinator.focusFirst(route)
     }
-    
+
     /**
      Searches the tabbar for the first route that matches the route and makes it the active tab.
 
@@ -33,6 +33,6 @@ public extension TabRouter where T: TabCoordinatable {
     @discardableResult func focusFirst<Output: View>(
         _ route: KeyPath<T, Content<T, Output>>
     ) -> T {
-        self.coordinator.focusFirst(route)
+        coordinator.focusFirst(route)
     }
 }

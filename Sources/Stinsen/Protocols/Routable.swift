@@ -1,5 +1,3 @@
 import Foundation
 
-public protocol Routable: ObservableObject {
-
-}
+public protocol Routable: ObservableObject {}

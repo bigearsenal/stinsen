@@ -1,24 +1,24 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 struct TodoScreen: View {
     private let todoId: UUID
-    
+
     @EnvironmentObject private var todosRouter: TodosCoordinator.Router
     @ObservedObject private var todosStore: TodosStore
 
     var content: some View {
         ScrollView {
             #if !os(iOS)
-            button
+                button
             #endif
             InfoText("This is the details screen for your todo.")
         }
         .navigationTitle(with: todosStore[todoId].name)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+
     var button: some View {
         Button(action: {
             todosStore[todoId].isFavorite.toggle()
@@ -26,16 +26,16 @@ struct TodoScreen: View {
             Image(systemName: "star" + (todosStore[todoId].isFavorite ? ".fill" : ""))
         })
     }
-    
+
     var body: some View {
         #if os(iOS)
-        content
-            .navigationBarItems(trailing: button)
+            content
+                .navigationBarItems(trailing: button)
         #else
-        content
+            content
         #endif
     }
-    
+
     init(todosStore: TodosStore, todoId: UUID) {
         self.todoId = todoId
         self.todosStore = todosStore

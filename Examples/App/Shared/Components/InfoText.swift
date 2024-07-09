@@ -6,24 +6,24 @@ struct InfoText: View {
 
     var body: some View {
         #if os(macOS)
-        standard
+            standard
         #elseif os(watchOS)
-        standard
+            standard
         #elseif os(tvOS)
-        standard
+            standard
         #elseif os(iOS)
-        ios
+            ios
         #else
-        standard
+            standard
         #endif
     }
-    
+
     var ios: some View {
         Text(text)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(18)
     }
-    
+
     var standard: some View {
         Text(text)
             .frame(maxWidth: .infinity, alignment: .leading)

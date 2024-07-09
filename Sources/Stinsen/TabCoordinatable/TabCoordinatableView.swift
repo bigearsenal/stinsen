@@ -7,7 +7,7 @@ struct TabCoordinatableView<T: TabCoordinatable, U: View>: View {
     @ObservedObject var child: TabChild
     private var customize: (AnyView) -> U
     private var views: [AnyView]
-    
+
     var body: some View {
         customize(
             AnyView(
@@ -25,20 +25,20 @@ struct TabCoordinatableView<T: TabCoordinatable, U: View>: View {
         )
         .environmentObject(router)
     }
-    
-    init(paths: [AnyKeyPath], coordinator: T, customize: @escaping (AnyView) -> U) {
+
+    init(paths _: [AnyKeyPath], coordinator: T, customize: @escaping (AnyView) -> U) {
         self.coordinator = coordinator
-        
-        self.router = TabRouter(coordinator: coordinator.routerStorable)
+
+        router = TabRouter(coordinator: coordinator.routerStorable)
         RouterStore.shared.store(router: router)
         self.customize = customize
-        self.child = coordinator.child
-        
+        child = coordinator.child
+
         if coordinator.child.allItems == nil {
             coordinator.setupAllTabs()
         }
 
-        self.views = coordinator.child.allItems.map {
+        views = coordinator.child.allItems.map {
             $0.presentable.view()
         }
     }

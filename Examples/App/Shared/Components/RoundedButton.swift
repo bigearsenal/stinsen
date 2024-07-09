@@ -7,24 +7,24 @@ struct RoundedButton: View {
         case secondary
         case tertiary
     }
-    
+
     let title: String
     var action: () -> Void
     let style: Style
-    
+
     var body: some View {
         #if targetEnvironment(macCatalyst)
-        standard
+            standard
         #elseif os(macOS)
-        standard
+            standard
         #elseif os(watchOS)
-        standard
+            standard
         #elseif os(tvOS)
-        standard
+            standard
         #elseif os(iOS)
-        ios
+            ios
         #else
-        standard
+            standard
         #endif
     }
 
@@ -33,7 +33,7 @@ struct RoundedButton: View {
             action()
         }
     }
-    
+
     var ios: some View {
         Button(action: action, label: {
             HStack {
@@ -53,7 +53,7 @@ struct RoundedButton: View {
             .frame(maxWidth: 300, minHeight: 50)
         })
     }
-    
+
     var foregroundColor: Color {
         switch style {
         case .primary:
@@ -64,7 +64,7 @@ struct RoundedButton: View {
             return Color("AccentColor")
         }
     }
-    
+
     var backgroundColor: Color {
         switch style {
         case .primary:
@@ -75,7 +75,7 @@ struct RoundedButton: View {
             return Color.clear
         }
     }
-    
+
     init(
         _ title: String,
         style: Style = .primary,

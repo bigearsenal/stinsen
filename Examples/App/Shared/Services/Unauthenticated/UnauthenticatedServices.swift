@@ -1,11 +1,9 @@
 import Foundation
 
 class UnauthenticatedServices: ObservableObject {
-    var userRegistration: UserRegistrationService = UserRegistrationService()
-    var forgotPassword: ForgotPasswordService = ForgotPasswordService()
-    var login: LoginService = LoginService()
+    var userRegistration: UserRegistrationService = .init()
+    var forgotPassword: ForgotPasswordService = .init()
+    var login: LoginService = .init()
 
-    init() {
-        
-    }
+    init() {}
 }

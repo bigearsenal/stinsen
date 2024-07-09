@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import Stinsen
+import SwiftUI
 
 extension ProfileCoordinator {
     @ViewBuilder func makeStart() -> some View {
