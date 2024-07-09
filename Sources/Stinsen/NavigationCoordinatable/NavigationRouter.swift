@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 public final class NavigationRouter<T>: Routable {
     public let id: Int
     public var coordinator: T {
