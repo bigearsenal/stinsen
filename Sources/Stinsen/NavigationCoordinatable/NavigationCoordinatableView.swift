@@ -40,14 +40,44 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
 
     @ViewBuilder
     var commonView: some View {
-        (id == -1 ? AnyView(self.coordinator.customize(AnyView(root.item.child.view()))) : AnyView(self.start!))
-            .if(.navigationStackAvailable) { view in
-                view.navigationDestination(isPresented: Binding<Bool>.init(get: { () -> Bool in
-                    presentationHelper.presented?.type.isPush == true
-                }, set: { _ in
-                    self.coordinator.appear(self.id)
-                })) {
-                    { () -> AnyView in
+        (id == -1 ? AnyView(coordinator.customize(AnyView(root.item.child.view()))) : AnyView(start!))
+//            .if(.navigationStackAvailable) { view in
+//                view.navigationDestination(isPresented: Binding<Bool>.init(get: { () -> Bool in
+//                    presentationHelper.presented?.type.isPush == true
+//                }, set: { _ in
+//                    self.coordinator.appear(self.id)
+//                })) {
+//                    { () -> AnyView in
+//                        if let view = presentationHelper.presented?.view {
+//                            return AnyView(view.onDisappear {
+//                                self.coordinator.stack.dismissalAction[id]?()
+//                                self.coordinator.stack.dismissalAction[id] = nil
+//                            })
+//                        } else {
+//                            return AnyView(EmptyView())
+//                        }
+//                    }()
+//                }
+//                .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
+//                    presentationHelper.presented?.type.isSheet == true
+//                }, set: { _ in
+//                    self.coordinator.appear(self.id)
+//                }), onDismiss: {
+//                    self.coordinator.stack.dismissalAction[id]?()
+//                    self.coordinator.stack.dismissalAction[id] = nil
+//                }, content: { () -> AnyView in
+//                    { () -> AnyView in
+//                        if let view = presentationHelper.presented?.view {
+//                            return AnyView(view)
+//                        } else {
+//                            return AnyView(EmptyView())
+//                        }
+//                    }()
+//                })
+//            } elseTransform: { view in
+            .background(
+                NavigationLink(
+                    destination: { () -> AnyView in
                         if let view = presentationHelper.presented?.view {
                             return AnyView(view.onDisappear {
                                 self.coordinator.stack.dismissalAction[id]?()
@@ -56,65 +86,35 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                         } else {
                             return AnyView(EmptyView())
                         }
-                    }()
-                }
-                .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
-                    presentationHelper.presented?.type.isSheet == true
-                }, set: { _ in
-                    self.coordinator.appear(self.id)
-                }), onDismiss: {
-                    self.coordinator.stack.dismissalAction[id]?()
-                    self.coordinator.stack.dismissalAction[id] = nil
-                }, content: { () -> AnyView in
-                    { () -> AnyView in
-                        if let view = presentationHelper.presented?.view {
-                            return AnyView(view)
-                        } else {
-                            return AnyView(EmptyView())
-                        }
-                    }()
-                })
-            } elseTransform: { view in
-                view.background(
-                    NavigationLink(
-                        destination: { () -> AnyView in
-                            if let view = presentationHelper.presented?.view {
-                                return AnyView(view.onDisappear {
-                                    self.coordinator.stack.dismissalAction[id]?()
-                                    self.coordinator.stack.dismissalAction[id] = nil
-                                })
-                            } else {
-                                return AnyView(EmptyView())
-                            }
-                        }(),
-                        isActive: Binding<Bool>.init(get: { () -> Bool in
-                            presentationHelper.presented?.type.isPush == true
-                        }, set: { _ in
-                            self.coordinator.appear(self.id)
-                        }),
-                        label: {
-                            EmptyView()
-                        }
-                    )
-                    .hidden()
+                    }(),
+                    isActive: Binding<Bool>.init(get: { () -> Bool in
+                        presentationHelper.presented?.type.isPush == true
+                    }, set: { _ in
+                        self.coordinator.appear(self.id)
+                    }),
+                    label: {
+                        EmptyView()
+                    }
                 )
-                .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
-                    presentationHelper.presented?.type.isSheet == true
-                }, set: { _ in
-                    self.coordinator.appear(self.id)
-                }), onDismiss: {
-                    self.coordinator.stack.dismissalAction[id]?()
-                    self.coordinator.stack.dismissalAction[id] = nil
-                }, content: { () -> AnyView in
-                    { () -> AnyView in
-                        if let view = presentationHelper.presented?.view {
-                            return AnyView(view)
-                        } else {
-                            return AnyView(EmptyView())
-                        }
-                    }()
-                })
-            }
+                .hidden()
+            )
+            .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
+                presentationHelper.presented?.type.isSheet == true
+            }, set: { _ in
+                self.coordinator.appear(self.id)
+            }), onDismiss: {
+                self.coordinator.stack.dismissalAction[id]?()
+                self.coordinator.stack.dismissalAction[id] = nil
+            }, content: { () -> AnyView in
+                { () -> AnyView in
+                    if let view = presentationHelper.presented?.view {
+                        return AnyView(view)
+                    } else {
+                        return AnyView(EmptyView())
+                    }
+                }()
+            })
+//            }
     }
 
     init(id: Int, coordinator: T) {
