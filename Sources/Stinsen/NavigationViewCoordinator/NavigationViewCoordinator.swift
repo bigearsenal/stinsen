@@ -5,28 +5,28 @@ import SwiftUI
 public class NavigationViewCoordinator<T: Coordinatable>: ViewWrapperCoordinator<T, AnyView> {
     public init(_ childCoordinator: T) {
         super.init(childCoordinator) { view in
-            if Bool.navigationStackAvailable {
+//            if Bool.navigationStackAvailable {
+//                return AnyView(
+//                    SwiftUI.NavigationStack {
+//                        view
+//                    }
+//                )
+//            } else {
+            #if os(macOS)
                 return AnyView(
-                    SwiftUI.NavigationStack {
+                    NavigationView {
                         view
                     }
                 )
-            } else {
-                #if os(macOS)
-                    return AnyView(
-                        NavigationView {
-                            view
-                        }
-                    )
-                #else
-                    return AnyView(
-                        NavigationView {
-                            view
-                        }
-                        .navigationViewStyle(StackNavigationViewStyle())
-                    )
-                #endif
-            }
+            #else
+                return AnyView(
+                    NavigationView {
+                        view
+                    }
+                    .navigationViewStyle(StackNavigationViewStyle())
+                )
+            #endif
+//            }
         }
     }
 

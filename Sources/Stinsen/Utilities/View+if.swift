@@ -36,13 +36,13 @@ extension View {
     }
 }
 
-public extension Bool {
-    static var navigationStackAvailable: Bool {
-        if #available(iOS 17.0, watchOS 10.0, tvOS 17.0, macOS 14, *) {
-            // It's iOS 13 so return true.
-            return true
-        }
-        // It's iOS 14 so return false.
-        return false
-    }
-}
+// public extension Bool {
+//    static var navigationStackAvailable: Bool {
+//        if #available(iOS 17.0, watchOS 10.0, tvOS 17.0, macOS 14, *) {
+//            // It's iOS 13 so return true.
+//            return true
+//        }
+//        // It's iOS 14 so return false.
+//        return false
+//    }
+// }
