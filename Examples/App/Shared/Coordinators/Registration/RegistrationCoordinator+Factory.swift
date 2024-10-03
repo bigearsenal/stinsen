@@ -3,11 +3,15 @@ import Stinsen
 import SwiftUI
 
 extension RegistrationCoordinator {
-    @ViewBuilder func makeStart() -> some View {
-        UserRegistrationScreen()
+    @ViewBuilder nonisolated func makeStart() -> some View {
+        MainActor.assumeIsolated {
+            UserRegistrationScreen()
+        }
     }
 
-    @ViewBuilder func makePassword(username: String) -> some View {
-        PasswordRegistrationScreen(services: services, username: username)
+    @ViewBuilder nonisolated func makePassword(username: String) -> some View {
+        MainActor.assumeIsolated {
+            PasswordRegistrationScreen(services: services, username: username)
+        }
     }
 }

@@ -3,31 +3,41 @@ import Stinsen
 import SwiftUI
 
 extension TestbedEnvironmentObjectCoordinator {
-    @ViewBuilder func makePushScreen() -> some View {
-        TestbedEnvironmentObjectScreen()
+    @ViewBuilder nonisolated func makePushScreen() -> some View {
+        MainActor.assumeIsolated {
+            TestbedEnvironmentObjectScreen()
+        }
     }
 
-    @ViewBuilder func makeModalScreen() -> some View {
+    @ViewBuilder nonisolated func makeModalScreen() -> some View {
 //        if Bool.navigationStackAvailable {
 //            SwiftUI.NavigationStack {
 //                TestbedEnvironmentObjectScreen()
 //            }
 //        } else {
         SwiftUI.NavigationView {
-            TestbedEnvironmentObjectScreen()
+            MainActor.assumeIsolated {
+                TestbedEnvironmentObjectScreen()
+            }
         }
 //        }
     }
 
-    func makePushCoordinator() -> TestbedEnvironmentObjectCoordinator {
-        TestbedEnvironmentObjectCoordinator()
+    nonisolated func makePushCoordinator() -> TestbedEnvironmentObjectCoordinator {
+        MainActor.assumeIsolated {
+            TestbedEnvironmentObjectCoordinator()
+        }
     }
 
-    func makeModalCoordinator() -> NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator> {
-        NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
+    nonisolated func makeModalCoordinator() -> NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator> {
+        MainActor.assumeIsolated {
+            NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
+        }
     }
 
-    @ViewBuilder func makeStart() -> some View {
-        TestbedEnvironmentObjectScreen()
+    @ViewBuilder nonisolated func makeStart() -> some View {
+        MainActor.assumeIsolated {
+            TestbedEnvironmentObjectScreen()
+        }
     }
 }

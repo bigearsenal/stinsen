@@ -3,15 +3,21 @@ import Stinsen
 import SwiftUI
 
 extension UnauthenticatedCoordinator {
-    func makeRegistration() -> RegistrationCoordinator {
-        return RegistrationCoordinator(services: unauthenticatedServices)
+    nonisolated func makeRegistration() -> RegistrationCoordinator {
+        MainActor.assumeIsolated {
+            RegistrationCoordinator(services: unauthenticatedServices)
+        }
     }
 
-    @ViewBuilder func makeForgotPassword() -> some View {
-        ForgotPasswordScreen(services: unauthenticatedServices)
+    @ViewBuilder nonisolated func makeForgotPassword() -> some View {
+        MainActor.assumeIsolated {
+            ForgotPasswordScreen(services: unauthenticatedServices)
+        }
     }
 
-    @ViewBuilder func makeStart() -> some View {
-        LoginScreen(services: unauthenticatedServices)
+    @ViewBuilder nonisolated func makeStart() -> some View {
+        MainActor.assumeIsolated {
+            LoginScreen(services: unauthenticatedServices)
+        }
     }
 }

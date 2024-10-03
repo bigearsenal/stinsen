@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 protocol NavigationOutputable {
     func using(coordinator: Any, input: Any) -> ViewPresentable
 }
@@ -13,6 +14,7 @@ public struct Presentation: RouteType {
     let type: PresentationType
 }
 
+@MainActor
 public struct Transition<T: NavigationCoordinatable, U: RouteType, Input, Output: ViewPresentable>: NavigationOutputable {
     let type: U
     let closure: (T) -> ((Input) -> Output)

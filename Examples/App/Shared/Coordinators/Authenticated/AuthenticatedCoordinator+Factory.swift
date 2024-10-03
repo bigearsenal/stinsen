@@ -3,44 +3,56 @@ import Stinsen
 import SwiftUI
 
 extension AuthenticatedCoordinator {
-    func makeTestbed() -> NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator> {
-        return NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
+    nonisolated func makeTestbed() -> NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator> {
+        MainActor.assumeIsolated {
+            NavigationViewCoordinator(TestbedEnvironmentObjectCoordinator())
+        }
     }
 
-    @ViewBuilder func makeTestbedTab(isActive: Bool) -> some View {
+    @ViewBuilder nonisolated func makeTestbedTab(isActive: Bool) -> some View {
         Image(systemName: "bed.double" + (isActive ? ".fill" : ""))
         Text("Testbed")
     }
 
-    func onTestbedTapped(_ isRepeat: Bool, coordinator: NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator>) {
-        if isRepeat {
-            coordinator.child.popToRoot()
+    nonisolated func onTestbedTapped(_ isRepeat: Bool,
+                                     coordinator: NavigationViewCoordinator<TestbedEnvironmentObjectCoordinator>)
+    {
+        MainActor.assumeIsolated {
+            if isRepeat {
+                coordinator.child.popToRoot()
+            }
         }
     }
 
-    func makeHome() -> HomeCoordinator {
-        return HomeCoordinator(todosStore: todosStore)
+    nonisolated func makeHome() -> HomeCoordinator {
+        MainActor.assumeIsolated {
+            HomeCoordinator(todosStore: todosStore)
+        }
     }
 
-    @ViewBuilder func makeHomeTab(isActive: Bool) -> some View {
+    @ViewBuilder nonisolated func makeHomeTab(isActive: Bool) -> some View {
         Image(systemName: "house" + (isActive ? ".fill" : ""))
         Text("Home")
     }
 
-    func makeTodos() -> NavigationViewCoordinator<TodosCoordinator> {
-        return NavigationViewCoordinator(TodosCoordinator(todosStore: todosStore))
+    nonisolated func makeTodos() -> NavigationViewCoordinator<TodosCoordinator> {
+        MainActor.assumeIsolated {
+            NavigationViewCoordinator(TodosCoordinator(todosStore: todosStore))
+        }
     }
 
-    @ViewBuilder func makeTodosTab(isActive: Bool) -> some View {
+    @ViewBuilder nonisolated func makeTodosTab(isActive: Bool) -> some View {
         Image(systemName: "folder" + (isActive ? ".fill" : ""))
         Text("Todos")
     }
 
-    func makeProfile() -> NavigationViewCoordinator<ProfileCoordinator> {
-        return NavigationViewCoordinator(ProfileCoordinator(user: user))
+    nonisolated func makeProfile() -> NavigationViewCoordinator<ProfileCoordinator> {
+        MainActor.assumeIsolated {
+            NavigationViewCoordinator(ProfileCoordinator(user: user))
+        }
     }
 
-    @ViewBuilder func makeProfileTab(isActive: Bool) -> some View {
+    @ViewBuilder nonisolated func makeProfileTab(isActive: Bool) -> some View {
         Image(systemName: "person.crop.circle" + (isActive ? ".fill" : ""))
         Text("Profile")
     }
