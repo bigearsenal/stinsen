@@ -3,15 +3,21 @@ import Stinsen
 import SwiftUI
 
 extension TodosCoordinator {
-    @ViewBuilder func makeTodo(todoId: UUID) -> some View {
-        TodoScreen(todosStore: todosStore, todoId: todoId)
+    @ViewBuilder nonisolated func makeTodo(todoId: UUID) -> some View {
+        MainActor.assumeIsolated {
+            TodoScreen(todosStore: todosStore, todoId: todoId)
+        }
     }
 
-    @ViewBuilder func makeCreateTodo() -> some View {
-        CreateTodoScreen(todosStore: todosStore)
+    @ViewBuilder nonisolated func makeCreateTodo() -> some View {
+        MainActor.assumeIsolated {
+            CreateTodoScreen(todosStore: todosStore)
+        }
     }
 
-    @ViewBuilder func makeStart() -> some View {
-        TodosScreen(todosStore: todosStore)
+    @ViewBuilder nonisolated func makeStart() -> some View {
+        MainActor.assumeIsolated {
+            TodosScreen(todosStore: todosStore)
+        }
     }
 }

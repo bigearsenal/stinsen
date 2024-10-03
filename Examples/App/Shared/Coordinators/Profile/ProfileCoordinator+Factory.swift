@@ -3,7 +3,9 @@ import Stinsen
 import SwiftUI
 
 extension ProfileCoordinator {
-    @ViewBuilder func makeStart() -> some View {
-        ProfileScreen(user: user)
+    @ViewBuilder nonisolated func makeStart() -> some View {
+        MainActor.assumeIsolated {
+            ProfileScreen(user: user)
+        }
     }
 }

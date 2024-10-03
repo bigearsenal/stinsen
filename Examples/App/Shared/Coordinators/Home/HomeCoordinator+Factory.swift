@@ -3,7 +3,9 @@ import Stinsen
 import SwiftUI
 
 extension HomeCoordinator {
-    @ViewBuilder func makeStart() -> some View {
-        HomeScreen(todosStore: todosStore)
+    @ViewBuilder nonisolated func makeStart() -> some View {
+        MainActor.assumeIsolated {
+            HomeScreen(todosStore: todosStore)
+        }
     }
 }

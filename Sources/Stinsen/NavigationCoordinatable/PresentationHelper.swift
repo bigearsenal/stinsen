@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
+@MainActor
 final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
     private let id: Int
     let navigationStack: NavigationStack<T>

@@ -1,12 +1,12 @@
 import Foundation
 
-class AuthenticationService: ObservableObject {
+class AuthenticationService: ObservableObject, @unchecked Sendable {
     enum Status: Equatable {
         case authenticated(User)
         case unauthenticated
     }
 
-    static var shared: AuthenticationService = .init()
+    static let shared: AuthenticationService = .init()
 
     @Published var status: Status {
         didSet {

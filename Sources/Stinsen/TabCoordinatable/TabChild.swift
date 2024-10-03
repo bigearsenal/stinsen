@@ -11,19 +11,20 @@ struct TabChildItem {
 
 /// Wrapper around childCoordinators
 /// Used so that you don't need to write @Published
+@MainActor
 public class TabChild: ObservableObject {
     weak var parent: ChildDismissable?
     public let startingItems: [AnyKeyPath]
 
     @Published var activeItem: TabChildItem!
-    
+
     var allItems: [TabChildItem]! {
         didSet {
             let newItem = allItems?[safe: activeTab]
             activeItem = newItem
         }
     }
-    
+
     public var activeTab: Int {
         didSet {
             allItems[activeTab].onTapped(oldValue == activeTab)

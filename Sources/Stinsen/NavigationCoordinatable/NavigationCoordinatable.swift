@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
+@MainActor
 public protocol NavigationCoordinatable: Coordinatable, RootPoppable {
     typealias Route = NavigationRoute
     typealias Root = NavigationRoute
