@@ -339,7 +339,7 @@ public extension NavigationCoordinatable {
         popTo(stack.value.count - 1 - int, action)
     }
 
-    internal func popTo(_ int: Int, _ action: (() -> Void)? = nil) {
+    func popTo(_ int: Int, _ action: (() -> Void)? = nil) {
         if let action = action {
             stack.dismissalAction[int] = action
         }
