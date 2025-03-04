@@ -482,7 +482,7 @@ public extension NavigationCoordinatable {
             }
 
             guard let compareTo = item.element.input else {
-                fatalError()
+                return false
             }
 
             return input.comparator(compareTo as! Input, input.value)
@@ -509,7 +509,7 @@ public extension NavigationCoordinatable {
             }
 
             guard let compareTo = item.element.input else {
-                fatalError()
+                return false
             }
 
             return input.comparator(compareTo as! Input, input.value)
@@ -705,7 +705,7 @@ public extension NavigationCoordinatable {
         }
 
         guard let compareTo = stack.root.item.input else {
-            fatalError()
+            return false
         }
 
         return inputItem.comparator(compareTo as! Input, inputItem.input)
@@ -724,7 +724,7 @@ public extension NavigationCoordinatable {
         }
 
         guard let compareTo = stack.root.item.input else {
-            fatalError()
+            return false
         }
 
         return inputItem.comparator(compareTo as! Input, inputItem.input)
