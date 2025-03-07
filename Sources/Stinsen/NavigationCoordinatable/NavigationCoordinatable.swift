@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
+@MainActor
 public protocol NavigationCoordinatable: Coordinatable, RootPoppable {
     typealias Route = NavigationRoute
     typealias Root = NavigationRoute
@@ -334,11 +335,11 @@ public extension NavigationCoordinatable {
         popTo(int, nil)
     }
 
-    func popLast(_ action: (() -> Void)? = nil) {
-        popTo(stack.value.count - 2, action)
+    func popLast(_ int: Int = 1, _ action: (() -> Void)? = nil) {
+        popTo(stack.value.count - 1 - int, action)
     }
 
-    internal func popTo(_ int: Int, _ action: (() -> Void)? = nil) {
+    func popTo(_ int: Int, _ action: (() -> Void)? = nil) {
         if let action = action {
             stack.dismissalAction[int] = action
         }
@@ -481,7 +482,7 @@ public extension NavigationCoordinatable {
             }
 
             guard let compareTo = item.element.input else {
-                fatalError()
+                return false
             }
 
             return input.comparator(compareTo as! Input, input.value)
@@ -508,7 +509,7 @@ public extension NavigationCoordinatable {
             }
 
             guard let compareTo = item.element.input else {
-                fatalError()
+                return false
             }
 
             return input.comparator(compareTo as! Input, input.value)
@@ -704,7 +705,7 @@ public extension NavigationCoordinatable {
         }
 
         guard let compareTo = stack.root.item.input else {
-            fatalError()
+            return false
         }
 
         return inputItem.comparator(compareTo as! Input, inputItem.input)
@@ -723,7 +724,7 @@ public extension NavigationCoordinatable {
         }
 
         guard let compareTo = stack.root.item.input else {
-            fatalError()
+            return false
         }
 
         return inputItem.comparator(compareTo as! Input, inputItem.input)

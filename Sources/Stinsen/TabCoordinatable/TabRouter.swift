@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 public class TabRouter<T>: Routable {
     public var coordinator: T {
         _coordinator.value as! T

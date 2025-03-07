@@ -26,6 +26,7 @@ public struct Transition<T: NavigationCoordinatable, U: RouteType, Input, Output
     }
 }
 
+@MainActor
 @propertyWrapper public class NavigationRoute<T: NavigationCoordinatable, U: RouteType, Input, Output: ViewPresentable> {
     public var wrappedValue: Transition<T, U, Input, Output>
 

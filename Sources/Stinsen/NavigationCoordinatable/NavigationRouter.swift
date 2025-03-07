@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 public final class NavigationRouter<T>: Routable {
     public let id: Int
     public var coordinator: T {
@@ -27,8 +28,8 @@ public extension NavigationRouter where T: NavigationCoordinatable {
         coordinator.popTo(id - 1, action)
     }
 
-    func popLast(_ action: (() -> Void)? = nil) {
-        coordinator.popLast(action)
+    func popLast(_ int: Int = 1, _ action: (() -> Void)? = nil) {
+        coordinator.popLast(int, action)
     }
 
     func dismissCoordinator(_ action: (() -> Void)? = nil) {

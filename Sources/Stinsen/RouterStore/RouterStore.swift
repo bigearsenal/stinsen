@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 @propertyWrapper public struct RouterObject<Value: Routable> {
     private var storage: RouterStore
     private var retreived: Value?
@@ -22,6 +23,7 @@ import Foundation
     }
 }
 
+@MainActor
 public class RouterStore {
     public static let shared = RouterStore()
 
